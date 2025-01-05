@@ -1,0 +1,97 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 20
+int arr[MAX];
+int pos, elem, n;
+// Function declarations
+void create();
+void display();
+void insert();
+void delete();
+int main()
+{
+int choice;
+int pos = 1;
+while (1)
+{
+printf("\n1.Create an array ");
+printf("\n2.Display the array ");
+printf("\n3.Insert an element ");
+printf("\n4.Delete an element ");
+printf("\n5.Exit ");
+printf("\nEnter your choice : ");
+scanf("%d", &choice);
+switch (choice)
+{
+case 1:
+create();
+break;
+case 2:
+display();
+break;
+case 3:
+insert();
+break;
+case 4:
+delete ();
+break;
+case 5:
+exit(1);
+default:
+printf("Wrong choice ");
+}
+}
+}
+// Function definitions
+void create()
+{
+int i;
+printf("Enter the size of the array : ");
+scanf("%d", &n);
+printf("Enter the elements of the array : ");
+for (i = 0; i < n; i++)
+scanf("%d", &arr[i]);
+}
+void display()
+{
+int i;
+if (n == 0)
+{
+printf("Array is empty ");
+return;
+}
+printf("Array elements are : ");
+for (i = 0; i < n; i++)
+printf("%d ", arr[i]);
+printf(" ");
+}
+void insert()
+{
+int i;
+if (n == MAX)
+{
+printf("Array is full ");
+return;
+}
+printf("Enter the position for the new element : ");
+scanf("%d", &pos);
+printf("Enter the element to be inserted : ");
+scanf("%d", &elem);
+// Shifting all elements from index 'pos' by 1 position
+// towards the right to create a vacant position at 'pos. for (i = n - 1; i >= pos; i--)
+arr[i + 1] = arr[i];
+// Inserting new element at index 'pos' arr[pos] = elem;
+n = n + 1; // Incrementing total element count
+}
+void delete()
+{
+int i;
+printf("Enter the position of the element to be deleted : ");
+scanf("%d", &pos);
+elem = arr[pos];
+printf("Element deleted is : %d ", elem);
+// Shifting all elements after index 'pos' by 1 position
+// towards left, overwriting element at pos by next one. for (i = pos; i <= n - 1; i++)
+arr[i] = arr[i + 1];
+n = n - 1; // Decrementing total element count
+}
