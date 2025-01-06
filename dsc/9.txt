@@ -1,70 +1,93 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-#define MAX 3
-int items[MAX];
-int front = -1, rear = -1;
+typedef struct node {
+    char name[50];
+    struct node *next;
+} Node;
 
-void insert(int value);
-void delete();
-void display();
+Node *head = NULL;
+
+void insert(char *name) {
+    Node *newNode = (Node *)malloc(sizeof(Node));
+    strcpy(newNode->name, name);
+    newNode->next = NULL;
+
+    if (head == NULL || strcmp(head->name, name) >= 0) {
+        newNode->next = head;
+        head = newNode;
+    } else {
+        Node *current = head;
+        while (current->next != NULL && strcmp(current->next->name, name) < 0)
+            current = current->next;
+        newNode->next = current->next;
+        current->next = newNode;
+    }
+}
+
+void delete(char *name) {
+    Node *temp = head, *prev;
+
+    if (temp != NULL && strcmp(temp->name, name) == 0) {
+        head = temp->next;
+        free(temp);
+        return;
+    }
+
+    while (temp != NULL && strcmp(temp->name, name) != 0) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        printf("Given name not found!");
+        return;
+    }
+
+    prev->next = temp->next;
+    free(temp);
+}
+
+void display() {
+    Node *ptr = head;
+    printf("\nNames in the List: ");
+    while (ptr != NULL) {
+        printf("%s ", ptr->name);
+        ptr = ptr->next;
+    }
+}
 
 int main() {
-    int ch;
-    int callid;
-    while(1) {
-        printf("\nEnter appropriate choice\n1. Add call\n2. Remove call\n3. Display call list\n4. Exit\n");
-        scanf("%d", &ch);
-        switch(ch) {
+    int choice;
+    char name[50];
+    
+    while (1) {
+        printf("\n1.Insert a name");
+        printf("\n2.Delete a name");
+        printf("\n3.Display the list");
+        printf("\n4.Exit");
+        printf("\nEnter your choice : ");
+        scanf("%d", &choice);
+        
+        switch (choice) {
             case 1:
-                printf("Enter caller id to add\n");
-                scanf("%d", &callid);
-                insert(callid);
+                printf("Enter the name to be inserted : ");
+                scanf("%s", name);
+                insert(name);
                 break;
             case 2:
-                delete();
+                printf("Enter the name to be deleted : ");
+                scanf("%s", name);
+                delete(name);
                 break;
             case 3:
                 display();
                 break;
             case 4:
-                exit(0);
+                exit(1);
             default:
-                printf("Invalid choice\n");
+                printf("Wrong choice ");
         }
-    }
-}
-
-void insert(int value) {
-    if (rear == MAX - 1) {
-        printf("\nQUEUE OVERFLOW");
-    } else {
-        if (front == -1)
-            front = 0;
-        rear = rear + 1;
-        items[rear] = value;
-        printf("\nCallerId added -> %d", value);
-    }
-}
-
-void delete() {
-    if (front == -1)
-        printf("\nCALL QUEUE UNDERFLOW!!");
-    else {
-        printf("\nCallerId Deleted: %d", items[front]);
-        front++;
-        if (front > rear)
-            front = rear = -1;
-    }
-}
-
-void display() {
-    if (rear == -1)
-        printf("\nCall Queue is Empty!!!");
-    else {
-        int i;
-        printf("\nCalls held in queue are:\n");
-        for (i = front; i <= rear; i++)
-            printf("%d ", items[i]);
     }
 }
