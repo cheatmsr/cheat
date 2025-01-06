@@ -64,28 +64,22 @@ void insert(int data, int key) {
 
     Node *current = head;
 
-    if (key != -1) {
-        while (current != NULL && current->data != key) {
-            current = current->next;
-        }
-        if (current == NULL) {
-            printf("Key not found\n");
-            free(newNode);
-            return;
-        }
+    while (current != NULL && current->data != key) {
+        current = current->next;
+    }
 
-        newNode->prev = current;
-        newNode->next = current->next;
-        current->next = newNode;
+    if (current == NULL) {
+        printf("Key not found\n");
+        return;
+    }
 
-        if (newNode->next != NULL) {
-            newNode->next->prev = newNode;
-        }
+    newNode->prev = current->prev;
+    current->prev = newNode;
+    newNode->next = current;
+
+    if (newNode->prev != NULL) {
+        newNode->prev->next = newNode;
     } else {
-        newNode->next = head;
-        if (head != NULL) {
-            head->prev = newNode;
-        }
         head = newNode;
     }
 }
