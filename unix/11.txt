@@ -1,0 +1,10 @@
+#!/bin/bash 
+sed -i 's/<name>/<DeptName>/g' sample.xml sed -i 's/<\/name>/<\/DeptName>/g' 
+sample.xml
+
+
+
+chmod +x replace_tags.sh exam
+./replace_tags.sh
+xmlstarlet sel -t -v "//usn" sample.xml > usn_values.txt 
+cat students.xml
